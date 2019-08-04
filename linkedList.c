@@ -82,7 +82,15 @@ void deleteLinkedList(linkedList_t* list)
 		return;
 	}
 
-	/* Free allocated memory */
+    /* Delete all elements in the list */
+    link_t* currentLink = list->firstElement;
+    do
+    {
+        deleteLink(list, currentLink);  /* Delete link */
+        currentLink = currentLink->next;/* Select next link */
+    }while(currentLink->next != NULL);
+    
+	/* Free allocated memory for the linked list */
 	free(list);
 }
 
