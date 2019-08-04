@@ -185,17 +185,25 @@ void deleteLink(linkedList_t* list, link_t* link)
 		return;
 	}
 
-	/* Change pointers to bypass link to be deleted */
-	link->previous->next = link->next;
-	link->next->previous = link->previous;
+  /* Check if link is the only element */
+  if (link == list->firstElement)
+  {
+    list->firstElement = NULL;
+  }
+  else
+  {
+    /* Change pointers to bypass link to be deleted */
+    link->previous->next = link->next;
+    link->next->previous = link->previous;
 
-	/* Check if link is last element */
-	if (link == list->lastElement)
-	{
-		list->lastElement = link->previous;
-		list->lastElement->next = NULL;
-	}
-
+    /* Check if link is last element */
+    if (link == list->lastElement)
+    {
+      list->lastElement = link->previous;
+      list->lastElement->next = NULL;
+    }
+  }
+	
 	/* Free data pointer */
 	free(link->data);
 
