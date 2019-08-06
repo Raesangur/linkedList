@@ -3,7 +3,7 @@
  * Author: Pascal-Emmanuel Lachance
  *         https://github.com/Raesangur/
  *
- * Created on 2 août 2019, 18:55
+ * Created on August 2nd 2019, 18:55
  */
 #pragma once
 #include <stdint.h>
@@ -27,7 +27,7 @@ void deleteLink(linkedList_t* list, link_t* link);
 void changeData(linkedList_t* list, link_t* link, void* newData);
 inline void* getData(link_t* link);
 
-/* Search functions return the first element of the list corresponding 
+/* Search functions returns the first element of the list corresponding 
  * to search parameters. */
 /* If no elements were found, it returns NULL */
 link_t* searchByData(linkedList_t* list, void* data);
