@@ -84,11 +84,13 @@ void deleteLinkedList(linkedList_t* list)
 
     /* Delete all elements in the list */
     link_t* currentLink = list->firstElement;
+    link_t* nextLink;
     do
     {
+        nextLink = currentLink->next;   /* Select next link */
         deleteLink(list, currentLink);  /* Delete link */
-        currentLink = currentLink->next;/* Select next link */
-    }while(currentLink->next != NULL);
+        currentLink = nextLink;         /* Change link */
+    }while(nextLink != NULL);
     
 	/* Free allocated memory for the linked list */
 	free(list);
