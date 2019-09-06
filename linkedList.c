@@ -1,52 +1,33 @@
 /* linkedList.c
  * Pascal-Emmanuel Lachance
- * https://www.github.com/Raesangur 
- * 
+ * https://www.github.com/Raesangur
+ *
  * Generic Linked Lists */
- 
-/* MIT License
 
-Copyright (c) 2019 Pascal-Emmanuel Lachance
+ /* MIT License
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+ Copyright (c) 2019 Pascal-Emmanuel Lachance
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. */
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
 
-/*****************************************************************************/
-/* File includes */
-#include <stdlib.h>
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE. */
+ /*****************************************************************************/
+ /* File includes */
 #include "linkedList.h"
-
-
-/*****************************************************************************/
-/* Typedefs */
-struct link_t
-{
-	link_t* previous;
-	link_t* next;
-	void* data;
-};
-
-struct linkedList_t
-{
-	link_t* firstElement;
-	link_t* lastElement;
-	uint8_t elementSize;
-};
 
 
 /*****************************************************************************/
@@ -56,7 +37,6 @@ static link_t* searchByNullData(linkedList_t* list);
 
 /*****************************************************************************/
 /* Public function definitions */
-
 linkedList_t* createLinkedList(uint8_t elementSize)
 {
 	/* Memory allocation */
@@ -81,16 +61,14 @@ void deleteLinkedList(linkedList_t* list)
 		return;
 	}
 
-    /* Delete all elements in the list */
-    link_t* currentLink = list->firstElement;
-    link_t* nextLink;
-    do
-    {
-        nextLink = currentLink->next;   /* Select next link */
-        deleteLink(list, currentLink);  /* Delete link */
-        currentLink = nextLink;         /* Change link */
-    }while(nextLink != NULL);
-    
+	/* Delete all elements in the list */
+	link_t* currentLink = list->firstElement;
+	do
+	{
+		deleteLink(list, currentLink);  /* Delete link */
+		currentLink = currentLink->next;/* Select next link */
+	} while (currentLink->next != NULL);
+
 	/* Free allocated memory for the linked list */
 	free(list);
 }
@@ -186,25 +164,25 @@ void deleteLink(linkedList_t* list, link_t* link)
 		return;
 	}
 
-  /* Check if link is the only element */
-  if (link == list->firstElement)
-  {
-    list->firstElement = NULL;
-  }
-  else
-  {
-    /* Change pointers to bypass link to be deleted */
-    link->previous->next = link->next;
-    link->next->previous = link->previous;
+	/* Check if link is the only element */
+	if (link == list->firstElement)
+	{
+		list->firstElement = link->next;
+	}
+	else
+	{
+		/* Change pointers to bypass link to be deleted */
+		link->previous->next = link->next;
+		link->next->previous = link->previous;
 
-    /* Check if link is last element */
-    if (link == list->lastElement)
-    {
-      list->lastElement = link->previous;
-      list->lastElement->next = NULL;
-    }
-  }
-	
+		/* Check if link is last element */
+		if (link == list->lastElement)
+		{
+			list->lastElement = link->previous;
+			list->lastElement->next = NULL;
+		}
+	}
+
 	/* Free data pointer */
 	free(link->data);
 
@@ -228,10 +206,6 @@ void changeData(linkedList_t* list, link_t* link, void* newData)
 		newData = (uint8_t*)newData + 1;
 	}
 	link->data = (uint8_t*)link->data - list->elementSize;
-}
-inline void* getData(link_t* link)
-{
-	return link->data;
 }
 
 
@@ -327,26 +301,6 @@ link_t* searchByNumber(linkedList_t* list, uint16_t num)
 		}
 	}
 	return currentLink;
-}
-
-
-inline link_t* getNextElement(link_t* link)
-{
-	return link->next;
-}
-inline link_t* getPreviousElement(link_t* link)
-{
-	return link->previous;
-}
-
-
-inline link_t* getFirstElement(linkedList_t* list)
-{
-	return list->firstElement;
-}
-inline link_t* getLastElement(linkedList_t* list)
-{
-	return list->lastElement;
 }
 
 
